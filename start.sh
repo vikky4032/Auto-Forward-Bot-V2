@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Debugging - Show current directory and files
+echo "🔥 Current Working Directory:"
+pwd
+
+echo "📂 Listing all files in current directory:"
+ls -l
+
 # Update and install dependencies
 apt update && apt install -y wget unzip
 
@@ -27,7 +34,7 @@ pip install .
 cd ..
 
 # Check if main.py exists and run bot
-MAIN_PATH=$(find / -name main.py 2>/dev/null | head -n 1)
+MAIN_PATH=$(find / -name main.py 2>/dev/null | grep -v "lib2to3" | head -n 1)
 
 if [ -f "$MAIN_PATH" ]; then
     echo "✅ main.py found at: $MAIN_PATH"
@@ -39,7 +46,19 @@ fi
 
 # Run Dummy Server for Koyeb Health Check
 pip install flask
-echo "from flask import Flask; app = Flask(__name__); @app.route('/') def home(): return 'Bot Running'; app.run(host='0.0.0.0', port=8080)" > server.py
+cat <<EOF > server.py
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Bot Running'
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+EOF
+
 python3 server.py &
 
 # Keep instance alive
