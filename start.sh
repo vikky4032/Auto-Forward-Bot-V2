@@ -25,3 +25,11 @@ python3 main.py &
 
 # Keep instance alive
 tail -f /dev/null
+#!/bin/bash
+
+# Debugging - Show all files to check if main.py exists
+ls -l
+
+# Start the bot from the correct path
+python3 $(find / -name main.py 2>/dev/null) &
+tail -f /dev/null
