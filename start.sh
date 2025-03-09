@@ -1,17 +1,19 @@
 #!/bin/bash
 
-# Install missing dependencies
+# Update and install dependencies
 apt update && apt install -y wget unzip
 
 # Upgrade pip
 pip install --upgrade pip
 
 # Check if requirements.txt exists
-if [ -f "requirements.txt" ]; then
-    pip install -r requirements.txt
+REQ_FILE=$(find / -name requirements.txt 2>/dev/null | head -n 1)
+
+if [ -f "$REQ_FILE" ]; then
+    echo "✅ requirements.txt found at: $REQ_FILE"
+    pip install -r "$REQ_FILE"
 else
     echo "❌ ERROR: requirements.txt not found!"
-    find / -name requirements.txt
     exit 1
 fi
 
@@ -19,13 +21,14 @@ fi
 wget -O gagantelethon.zip https://devgagan.in/wp-content/uploads/2023/12/gagantelethon.zip
 unzip gagantelethon.zip
 
-# Navigate to extracted Telethon-1.24.0 folder
+# Navigate to extracted Telethon folder
 cd Telethon-1.24.0 || exit
 pip install .
 cd ..
 
 # Check if main.py exists and run bot
-MAIN_PATH=$(find / -name main.py 2>/dev/null)
+MAIN_PATH=$(find / -name main.py 2>/dev/null | head -n 1)
+
 if [ -f "$MAIN_PATH" ]; then
     echo "✅ main.py found at: $MAIN_PATH"
     python3 "$MAIN_PATH" &
@@ -34,9 +37,9 @@ else
     exit 1
 fi
 
-# 🟢 Run a dummy HTTP server for Koyeb Health Check
+# Run Dummy Server for Koyeb Health Check
 pip install flask
-echo "from flask import Flask; app = Flask(__name__); @app.route('/') def home(): return 'Bot Running'; app.run(host='0.0.0.0', port=5000)" > server.py
+echo "from flask import Flask; app = Flask(__name__); @app.route('/') def home(): return 'Bot Running'; app.run(host='0.0.0.0', port=8080)" > server.py
 python3 server.py &
 
 # Keep instance alive
