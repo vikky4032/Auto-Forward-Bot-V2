@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Install dependencies
+# Install missing dependencies
+apt update && apt install -y wget unzip
+
+# Install Python dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
 
@@ -9,8 +12,6 @@ wget -O gagantelethon.zip https://devgagan.in/wp-content/uploads/2023/12/gagante
 unzip gagantelethon.zip
 cd gagantelethon || exit
 pip install .
-
-# Go back to main directory
 cd ..
 
 # Start the bot
