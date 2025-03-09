@@ -1,17 +1,23 @@
 #!/bin/bash
 
-# Install missing dependencies
+# Update package list and install missing dependencies
 apt update && apt install -y wget unzip
 
-# Install Python dependencies
+# Upgrade pip and install Python dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Download and install external ZIP file
+# Download and extract external ZIP file
 wget -O gagantelethon.zip https://devgagan.in/wp-content/uploads/2023/12/gagantelethon.zip
 unzip gagantelethon.zip
-cd gagantelethon || exit
+
+# Navigate to the extracted Telethon-1.24.0 folder
+cd Telethon-1.24.0 || exit
+
+# Install the package inside the extracted folder
 pip install .
+
+# Return to the main directory
 cd ..
 
 # Start the bot
