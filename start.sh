@@ -38,14 +38,14 @@ MAIN_PATH=$(find / -name main.py 2>/dev/null | grep -v "lib2to3" | head -n 1)
 
 if [ -f "$MAIN_PATH" ]; then
     echo "✅ main.py found at: $MAIN_PATH"
-    python3 "$MAIN_PATH" &
+    python3 "$MAIN_PATH"  # RUN DIRECTLY, no "&"
 else
     echo "❌ ERROR: main.py not found!"
     exit 1
 fi
 
-# Kill any process running on port 5000
-PORT=5000
+# Kill any process running on port 8080
+PORT=8080
 if lsof -i :$PORT; then
     echo "⚠️ Port $PORT is already in use. Killing process..."
     fuser -k $PORT/tcp
