@@ -36,7 +36,7 @@ fi
 
 # 🟢 Run a dummy HTTP server for Koyeb Health Check
 pip install flask
-echo "from flask import Flask; app = Flask(__name__); @app.route('/') def home(): return 'Bot Running'; app.run(host='0.0.0.0', port=8080)" > server.py
+echo "from flask import Flask; app = Flask(__name__); @app.route('/') def home(): return 'Bot Running'; app.run(host='0.0.0.0', port=5000)" > server.py
 python3 server.py &
 
 # Keep instance alive
