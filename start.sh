@@ -44,7 +44,14 @@ else
     exit 1
 fi
 
-# Run Dummy Server for Koyeb Health Check
+# Kill any process running on port 5000
+PORT=5000
+if lsof -i :$PORT; then
+    echo "⚠️ Port $PORT is already in use. Killing process..."
+    fuser -k $PORT/tcp
+fi
+
+# Run Dummy Server for Koyeb Health Check on port 8080
 pip install flask
 cat <<EOF > server.py
 from flask import Flask
@@ -56,7 +63,7 @@ def home():
     return 'Bot Running'
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)  # Running on port 8080
 EOF
 
 python3 server.py &
